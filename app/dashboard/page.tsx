@@ -1,10 +1,10 @@
-import { UserButton } from "@clerk/nextjs";
+import WorkspaceList from "@/components/ui/workspaceList";
 import React from "react";
 
 const Page = () => {
     return (
         <div>
-            <UserButton />
+            <WorkspaceList />
         </div>
     );
 };
