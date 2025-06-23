@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
-import Header from "@/components/shared/header";
-import AnalyticsLoader from "@/components/logic/client/client";
+import { Toaster } from "@/components/ui/sonner";
 
 const OutfitFONT = Outfit({
     subsets: ["latin"],
@@ -23,8 +22,7 @@ export default function RootLayout({
         <ClerkProvider>
             <html lang="en">
                 <body className={`${OutfitFONT.className} antialiased`}>
-                    <AnalyticsLoader />
-                    <Header />
+                    <Toaster position="top-center" />
                     {children}
                 </body>
             </html>

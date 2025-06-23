@@ -10,7 +10,7 @@ export default function WorkspaceList() {
     const [workSpaceList, setWorkSpaceList] = useState([]);
 
     return (
-        <div className="my-10 p-10 md:px-24 lg:px-36 xl:px-52 ">
+        <div className="my-10 p-10 md:px-24 lg:px-[10%] ">
             <div className="flex justify-between ">
                 <HelloUser />
                 <Button variant={"default"}>+</Button>
@@ -35,7 +35,7 @@ export default function WorkspaceList() {
 
                     <h2>Create a new workspace</h2>
 
-                    <Link href={"/create-workspace"}>
+                    <Link href={"/workspaces/create-workspace"}>
                         <Button className="m-3">+ New Workspace</Button>
                     </Link>
                 </div>

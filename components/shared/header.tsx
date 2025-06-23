@@ -1,17 +1,45 @@
+import { Menu } from "lucide-react";
 import Logo from "../icons/Logo";
-import { OrganizationSwitcher, useAuth, UserButton } from "@clerk/nextjs";
+import { OrganizationSwitcher, UserButton } from "@clerk/nextjs";
+import Link from "next/link";
+
+const links = [
+    "Product",
+    "Solutions",
+    "Docs",
+    "LinkFour",
+    "LinkFive",
+    "Pricing",
+    "Company",
+];
 
 const Header = () => {
-    // const {orgId} = useAuth()
-
     return (
-        <div className=" flex justify-between p-3 shadow-sm">
-            <Logo />
-            <OrganizationSwitcher
-                afterLeaveOrganizationUrl="/dashboard"
-                afterCreateOrganizationUrl={"/dashboard"}
-            />
-            <UserButton />
+        <div className=" flex justify-between p-3  shadow-sm px-[10%]">
+            <div className="flex items-center space-x-10">
+                <Logo />
+
+                <nav className=" space-x-2">
+                    {links.map((link, i) => (
+                        <Link
+                            key={i}
+                            href={"#"}
+                            className="px-2 py-1.5 text-sm font-medium hover:bg-gray-900/5 rounded-md"
+                        >
+                            {link}
+                        </Link>
+                    ))}
+                </nav>
+            </div>
+
+            <div className="flex space-x-2 w-[86px] justify-end">
+                <OrganizationSwitcher
+                    afterLeaveOrganizationUrl="/dashboard"
+                    afterCreateOrganizationUrl={"/dashboard"}
+                />
+                <UserButton />
+                <Menu className="sm:hidden" />
+            </div>
         </div>
     );
 };

@@ -1,6 +1,5 @@
 import React from "react";
 import CoverImage from "@/components/ui/cover-image";
-
 import Createworkspace from "@/components/ui/Createworkspace";
 
 export default function Page() {

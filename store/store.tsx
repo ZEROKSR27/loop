@@ -1,17 +1,16 @@
+import { workspace } from "@/types/workspace";
 import { create } from "zustand";
 
 type store = {
     coverImageURL: string;
     setCoverImageURL: (coverImageURL: string) => void;
 
+    // i thoght this project would be small so I just put all states in this confusing store
     isOpened: boolean;
     setIsOpened: (isColPickOpened: boolean) => void;
 
-    workspace: {
-        name: string;
-        emoji: string;
-    };
-    setWorkspace: (name: string, emoji: string) => void;
+    workspace: workspace;
+    setWorkspace: (wor: workspace) => void;
 };
 
 export const useStore = create<store>((set) => ({
@@ -23,9 +22,13 @@ export const useStore = create<store>((set) => ({
     setIsOpened: (bool: boolean) => set({ isOpened: bool }),
     // workspace
     workspace: {
-        name: "",
+        coverImage: "/cover.png",
+        createdAt: "",
+        createdBy: "",
         emoji: "",
+        id: "",
+        orgID: "",
+        workspaceName: "",
     },
-    setWorkspace: (name: string, emoji: string) =>
-        set({ workspace: { name, emoji } }),
+    setWorkspace: (wor: workspace) => set({ workspace: wor }),
 }));

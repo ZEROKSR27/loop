@@ -1,5 +1,11 @@
 import Hero from "@/components/sections/Hero";
+import Header from "@/components/shared/header";
 
 export default function Home() {
-    return <Hero />;
+    return (
+        <div>
+            <Header />
+            <Hero />
+        </div>
+    );
 }

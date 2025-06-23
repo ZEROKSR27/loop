@@ -1,17 +1,11 @@
-type props = {
+import File from "./file";
+
+type params = {
     params: Promise<{ workspaceID: string; documentID: string }>;
 };
 
-export default async function Page({ params }: props) {
-    const { workspaceID, documentID } = await params;
-    return (
-        <div>
-            <div>
-                <h1>Workspace: {workspaceID}</h1>
-            </div>
-            <div>
-                <h1>Document: {documentID}</h1>
-            </div>
-        </div>
-    );
+export default async function page({ params }: params) {
+    const { documentID, workspaceID } = await params;
+
+    return <File documentID={documentID} workspaceID={workspaceID} />;
 }
