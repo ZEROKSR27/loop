@@ -28,8 +28,7 @@ export const coverOptions = [
             "https://img.freepik.com/free-photo/vibrant-colors-flow-abstract-wave-pattern-generated-by-ai_188544-9781.jpg?ga=GA1.1.1679917421.1705195646&semt=sph",
     },
     {
-        imageUrl:
-            "https://img.freepik.com/free-photo/abstract-psychedelic-papercut-background_23-2149303027.jpg?ga=GA1.1.1679917421.1705195646&semt=sph",
+        imageUrl: "/cover.png",
     },
     {
         imageUrl:

@@ -76,6 +76,13 @@
     --sidebar-ring: oklch(0.708 0 0);
 }
 
+body {
+    width: 100% !important;
+    height: 100vh !important;
+    overflow: scroll !important;
+    overflow-x: hidden !important;
+}
+
 .dark {
     --background: oklch(0.145 0 0);
     --foreground: oklch(0.985 0 0);
@@ -115,6 +122,55 @@
         @apply border-border outline-ring/50;
     }
     body {
-        @apply bg-background text-foreground;
+        @apply bg-background text-foreground overflow-x-hidden;
+    }
+
+    .animated-button {
+        position: relative;
+        display: inline-block;
+        padding: 5px 18px;
+        border: none;
+        font-size: 16px;
+        background-color: inherit;
+        border-radius: 100px;
+        font-weight: 500;
+        color: #00000060;
+        box-shadow: 0 0 0 2px #ffffff20;
+        cursor: pointer;
+        overflow: hidden;
+        transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .animated-button span:last-child {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 20px;
+        height: 20px;
+        background-color: #8230ff;
+        border-radius: 50%;
+        opacity: 0;
+        transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .animated-button span:first-child {
+        position: relative;
+        z-index: 1;
+    }
+
+    .animated-button:hover {
+        box-shadow: 0 0 0 5px #8230ff60;
+        color: #ffffff;
+    }
+
+    .animated-button:active {
+        scale: 0.95;
+    }
+
+    .animated-button:hover span:last-child {
+        width: 150px;
+        height: 150px;
+        opacity: 1;
     }
 }

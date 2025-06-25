@@ -89,7 +89,7 @@ export const useFetchWorkspace = ({ task, reqBody, onSuccess }: props) => {
                 "Request failed | catched in createWorkspace.tsx",
                 err
             );
-            toast("Error");
+            toast.error("Error");
         } finally {
             setLoading(false);
         }

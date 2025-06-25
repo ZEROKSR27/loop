@@ -15,11 +15,11 @@ const links = [
 
 const Header = () => {
     return (
-        <div className=" flex justify-between p-3  shadow-sm px-[10%]">
+        <div className=" flex justify-between p-3  shadow-sm  sm:px-[10%] lg:px-[5%] xl:px-[10%]">
             <div className="flex items-center space-x-10">
                 <Logo />
 
-                <nav className=" space-x-2">
+                <nav className=" space-x-2 hidden lg:flex">
                     {links.map((link, i) => (
                         <Link
                             key={i}

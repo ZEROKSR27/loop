@@ -5,7 +5,7 @@ import { Button } from "./button";
 import { Loader2Icon, SmilePlus } from "lucide-react";
 import { Input } from "./input";
 import ColPic from "../shared/ColPic";
-import { useStore } from "@/store/store";
+import { usePersistentStore, useStore } from "@/store/store";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { FullWorkspace, useFetchWorkspace } from "@/services/api/fetcher";
@@ -13,9 +13,12 @@ import { FullWorkspace, useFetchWorkspace } from "@/services/api/fetcher";
 const Createworkspace = () => {
     // store state
     const isOpened = useStore((state) => state.isOpened);
-    const coverImage = useStore((state) => state.coverImageURL);
-    const setOpen = useStore((state) => state.setIsOpened);
+    const coverImage = useStore((state) => state.selectedCover.url);
     const setIsOpened = useStore((state) => state.setIsOpened);
+    const show = usePersistentStore((state) => state.isShowThisAgain);
+    const DoNotShowAgain = usePersistentStore(
+        (state) => state.DoNotShowThisAgain
+    );
     // useHook
     const [Name, setName] = useState("");
     const [emoji, setEmoji] = useState("");
@@ -61,7 +64,11 @@ const Createworkspace = () => {
                 }`}
             >
                 {/* emoji picker */}
-                <ColPic setIsOpened={setIsOpened} setEmoji={setEmoji} />
+                <ColPic
+                    isOpened={isOpened}
+                    setIsOpened={setIsOpened}
+                    setEmoji={setEmoji}
+                />
             </div>
             <h2 className="font-medium text-xl">Create a new workspace</h2>
             <h2 className="mt-2 font-medium text-sm">
@@ -69,7 +76,7 @@ const Createworkspace = () => {
                 team. u can rename this later
             </h2>
             <div className="mt-8 flex items-center gap-2">
-                <Button onClick={() => setOpen(true)} variant={"outline"}>
+                <Button onClick={() => setIsOpened(true)} variant={"outline"}>
                     {emoji ? (
                         emoji
                     ) : (
@@ -85,22 +92,29 @@ const Createworkspace = () => {
                     }}
                 />
             </div>
-            <div className="flex justify-end  gap-6 mt-7">
+            <div className="flex justify-end  gap-4 mt-7">
                 <Button
                     disabled={!Name?.length || Loading}
                     onClick={async () => {
+                        if (coverImage == "/cover.png" && show) {
+                            toast.message(
+                                "Click on the coverImage to change it",
+
+                                {
+                                    action: {
+                                        label: "Don't show this again",
+                                        onClick: () => DoNotShowAgain(),
+                                    },
+                                }
+                            );
+                        }
                         await createWorkspace();
-                        toast("A new Workspace has been created", {
-                            description:
-                                "You can only create 5 docs per workspace",
-                            action: {
-                                label: "Undo",
-                                onClick: () => console.log("Undo"),
-                            },
-                        });
+                        if (Res?.data?.uuid) {
+                            toast.success("Workspace created successfully!");
+                        }
                     }}
                 >
-                    Create{" "}
+                    {Loading ? "Loading" : "Create"}
                     {Loading && <Loader2Icon className=" animate-spin" />}
                 </Button>
                 <Button variant={"outline"}>Cancel</Button>

@@ -12,17 +12,15 @@ import {
 } from "@/components/ui/dialog";
 import { coverOptions } from "../shared/coverOptions";
 import Image from "next/image";
-import { useState } from "react";
+import { useStore } from "@/store/store";
 
 type props = {
     children: React.ReactNode;
-    setImageUrl: (url: string) => void;
 };
-export default function CoverPicker({ children, setImageUrl }: props) {
-    const [selectedCover, setSelectedCover] = useState({
-        url: "/cover.png",
-        v: 1,
-    });
+export default function CoverPicker({ children }: props) {
+    const selectedCover = useStore((state) => state.selectedCover);
+    const setSelectedCover = useStore((state) => state.setselectedCover);
+
     return (
         <Dialog>
             <form>
@@ -120,15 +118,20 @@ export default function CoverPicker({ children, setImageUrl }: props) {
 
                     <DialogFooter>
                         <DialogClose asChild>
-                            <Button variant="outline">Cancel</Button>
+                            <Button
+                                variant="outline"
+                                onClick={() => {
+                                    setSelectedCover({
+                                        url: "/cover.png",
+                                        v: 1,
+                                    });
+                                }}
+                            >
+                                default
+                            </Button>
                         </DialogClose>
                         <DialogClose asChild>
-                            <Button
-                                onClick={() => setImageUrl(selectedCover.url)}
-                                type="submit"
-                            >
-                                Update
-                            </Button>
+                            <Button type="submit">Update</Button>
                         </DialogClose>
                     </DialogFooter>
                 </DialogContent>

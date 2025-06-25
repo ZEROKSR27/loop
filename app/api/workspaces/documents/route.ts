@@ -9,18 +9,28 @@ export async function POST(req: NextRequest) {
     try {
         //1. get data from body
         const body: document = await req.json();
-        const values = Object.values(body);
         const {
             coverImage,
             createdBy,
             documentName,
-            documentOutput,
+            documentOutput = [],
             emoji,
             workspaceID,
         } = body;
 
         //2. make sure data is there
-        if (values.find((i) => !i) === undefined) {
+
+        if (!coverImage || !createdBy || !documentName || !workspaceID) {
+            console.log("received data was");
+            console.table({
+                coverImage,
+                createdBy,
+                documentName,
+                documentOutput,
+                emoji,
+                workspaceID,
+            });
+            console.log("all data must be there");
             return NextResponse.json(
                 {
                     error: "Bad Request",
@@ -40,6 +50,12 @@ export async function POST(req: NextRequest) {
             workspaceID,
             documentOutput,
             id: uuid,
+        });
+        await db.collection("outputs").doc(uuid).set({
+            documentID: uuid,
+            id: uuid,
+            output: [],
+            workspaceID: workspaceID,
         });
 
         //4. tel client about it
@@ -121,7 +137,6 @@ export async function DELETE(req: NextRequest) {
         //1. get data from body
         const body = await req.json();
         const { documentID } = body;
-        console.log(documentID);
 
         //2. make sure data is there
         if (!documentID) {
@@ -160,35 +175,55 @@ export async function DELETE(req: NextRequest) {
     }
 }
 
-// export async function POST(req: NextRequest) {
-//     try {
-//         console.clear();
-//         const body = await req.json();
-//         const { documentNEW } = body;
-//         if (!documentNEW) {
-//             NextResponse.json({ message: "documentNEW is required" });
-//         }
+// /api/workspaces/document(PUT)
+// export async function PUT(req: NextRequest) {
+//     // console.clear();
+//     // console.log("start DELETE CONTROLLER from here");
 
-//         await db.collection("workspaces").doc(Date.now().toString()).set({
-//             workspaceName: documentNEW,
-//             emoji: documentNEW,
-//             coverImage: documentNEW,
-//             createdBy: documentNEW,
-//             orgID: documentNEW,
-//             createdAt: Date.now().toString(),
-//         });
+//     // try {
+//     //     //1. get data from body
+//     //     const body = await req.json();
+//     //     const { documentID } = body;
 
-//         NextResponse.json({
-//             status: "ok",
-//         });
-//     } catch (err) {
-//         console.error(err);
-//         NextResponse.json({
-//             status: 500,
-//         });
-//     }
+//     //     //2. make sure data is there
+//     //     if (!documentID) {
+//     //         return NextResponse.json(
+//     //             {
+//     //                 error: "Bad Request",
+//     //                 message: "'document' is required",
+//     //             },
+//     //             { status: 400 }
+//     //         );
+//     //     }
+
+//     //     //3. delete that document
+//     //     await db.collection("documents").doc(documentID).delete();
+
+//     //     //4. tel client about it
+//     //     return NextResponse.json({
+//     //         message: "document deleted successfully",
+//     //         success: true,
+//     //         status: 200,
+//     //     });
+//     // } catch (err) {
+//     //     console.error(
+//     //         "Error caught in api/workspaces/documents/route.ts DELETE",
+//     //         err
+//     //     );
+//     //     return NextResponse.json(
+//     //         {
+//     //             error: "Internal Server Error",
+//     //             message: "Failed to delete workspace",
+//     //             success: false,
+//     //             status: 500,
+//     //         },
+//     //         { status: 500 }
+//     //     );
+//     // }
+
+//     //
+
 // }
 
-// 1. YOU send the error (if it exist) (just use the name of error)
-// 2. YOU send a message explaining why was it !ok or just that it's ok
-// 3. YOU send status/success if would be helpfull
+// const cityRef = db.collection("cities").doc("DC");
+// await cityRef.update({ capital: true });

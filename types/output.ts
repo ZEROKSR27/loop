@@ -1,4 +1,4 @@
-export interface document {
+export interface output {
     documentID: string;
     id: string;
     output: [];

@@ -292,6 +292,27 @@ function SidebarTrigger({
         </Button>
     );
 }
+function SidebarTriggerMineClose({
+    children,
+    ...props
+}: React.ComponentProps<typeof Button>) {
+    const { toggleSidebar } = useSidebar();
+
+    return (
+        <Button
+            asChild
+            data-sidebar="trigger"
+            data-slot="sidebar-trigger"
+            variant="ghost"
+            onClick={() => {
+                toggleSidebar();
+            }}
+            {...props}
+        >
+            <span>{children}</span>
+        </Button>
+    );
+}
 
 function SidebarRail({ className, ...props }: React.ComponentProps<"button">) {
     const { toggleSidebar } = useSidebar();
@@ -747,4 +768,5 @@ export {
     SidebarSeparator,
     SidebarTrigger,
     useSidebar,
+    SidebarTriggerMineClose,
 };

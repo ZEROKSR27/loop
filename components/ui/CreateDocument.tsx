@@ -1,11 +1,11 @@
 "use client";
 import { useUser } from "@clerk/nextjs";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "./button";
 import { Loader2Icon, SmilePlus } from "lucide-react";
 import { Input } from "./input";
 import ColPic from "../shared/ColPic";
-import { useStore } from "@/store/store";
+import { usePersistentStore, useStore } from "@/store/store";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { OneDoc, useFetchWorkspace } from "@/services/api/fetcher";
@@ -22,9 +22,12 @@ export default function CreateDocument({
 }) {
     // store state
     const isOpened = useStore((state) => state.isOpened);
-    const coverImage = useStore((state) => state.coverImageURL);
-    const setOpen = useStore((state) => state.setIsOpened);
+    const coverImage = useStore((state) => state.selectedCover.url);
     const setIsOpened = useStore((state) => state.setIsOpened);
+    const show = usePersistentStore((state) => state.isShowThisAgain);
+    const DoNotShowAgain = usePersistentStore(
+        (state) => state.DoNotShowThisAgain
+    );
     // useHook
     const [Name, setName] = useState("");
     const [emoji, setEmoji] = useState("");
@@ -41,49 +44,37 @@ export default function CreateDocument({
         workspaceID,
     };
 
-    //
-    const onSuccess = () => {
-        let existingRes;
-        if (!!Res) {
-            existingRes = Res;
-
-            const uuid = existingRes.data?.uuid;
-
-            navigateTo("/workspaces/" + workspaceID + "/" + uuid);
-        }
-    };
-
     const {
         Loading,
         f: createDoc,
         Res,
     } = useFetchWorkspace({
-        onSuccess,
         task: "CreateOnlyOneDocument",
         reqBody: obj,
     });
 
+    useEffect(() => {
+        const uuid = Res?.data?.uuid;
+        if (uuid) {
+            navigateTo("./" + uuid);
+        }
+    }, [Res?.data?.uuid, navigateTo]);
+
     return (
         <div className="p-12">
-            {/* emoji picker overlay */}
-            <div
-                onClick={() => {
-                    setIsOpened(false);
-                }}
-                className={`inset-0 absolute bg-black/40 z-50 ${
-                    isOpened ? "fixed" : "hidden"
-                }`}
-            >
-                {/* emoji picker */}
-                <ColPic setIsOpened={setIsOpened} setEmoji={setEmoji} />
-            </div>
+            <ColPic
+                isOpened={isOpened}
+                setIsOpened={setIsOpened}
+                setEmoji={setEmoji}
+            />
+
             <h2 className="font-medium text-xl">Create a new Document</h2>
-            <h2 className="mt-2 font-medium text-sm">
-                create a document inside the workspace that has this id{" "}
-                {workspaceID}. u can rename this later
+            <h2 className="mt-2 font-medium text-sm selection:bg-green-200">
+                create a document inside the current workspace. can rename this
+                doc later
             </h2>
             <div className="mt-8 flex items-center gap-2">
-                <Button onClick={() => setOpen(true)} variant={"outline"}>
+                <Button onClick={() => setIsOpened(true)} variant={"outline"}>
                     {emoji ? (
                         emoji
                     ) : (
@@ -103,15 +94,29 @@ export default function CreateDocument({
                 <Button
                     disabled={!Name?.length || Loading}
                     onClick={async () => {
+                        if (coverImage == "/cover.png" && show) {
+                            toast.message(
+                                "Click on the coverImage to change it",
+
+                                {
+                                    action: {
+                                        label: "Don't show this again",
+                                        onClick: () => DoNotShowAgain(),
+                                    },
+                                }
+                            );
+                        }
                         await createDoc();
-                        toast("A new document has been created", {
-                            description:
-                                "You can only create 5 docs per workspace",
-                            action: {
-                                label: "Undo",
-                                onClick: () => console.log("Undo"),
-                            },
-                        });
+                        if (Res?.data?.uuid) {
+                            toast("A new document has been created", {
+                                description:
+                                    "You can only create 5 docs per workspace",
+                                action: {
+                                    label: "Undo",
+                                    onClick: () => console.log("Undo"),
+                                },
+                            });
+                        }
                     }}
                 >
                     {Loading ? "loading" : "Create"}{" "}
