@@ -33,12 +33,19 @@ export async function POST(req: NextRequest) {
             id: uuid,
         });
 
-        await db.collection("outputs").doc(uuid).set({
-            documentID: uuid,
-            workspaceID: uuid,
-            output: [],
-            id: uuid,
-        });
+        await db
+            .collection("outputs")
+            .doc(uuid)
+            .set({
+                documentID: uuid,
+                workspaceID: uuid,
+                output: JSON.stringify({
+                    time: uuid,
+                    blocks: [],
+                    version: "2.31.0-rc.7",
+                }),
+                id: uuid,
+            });
 
         //3. return status created successfully
         return NextResponse.json({

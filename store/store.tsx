@@ -72,3 +72,20 @@ export const usePersistentStore = create<PersistentProps>()(
         }
     )
 );
+type PersistentPropsTwo = {
+    commentIsShow: boolean;
+    DoNotShowCommentAgain: () => void;
+};
+
+export const usePersistentStoreTwo = create<PersistentPropsTwo>()(
+    // Relevant: نغلف الدالة بـ persist لتفعيل التخزين
+    persist(
+        (set) => ({
+            commentIsShow: true,
+            DoNotShowCommentAgain: () => set({ commentIsShow: false }),
+        }),
+        {
+            name: "persistent-storeTwo", // Relevant: اسم التخزين في localStorage
+        }
+    )
+);

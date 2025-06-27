@@ -16,6 +16,8 @@ import { Button } from "./ui/button";
 import SideBarContentMine from "./sideBarContent";
 import { document } from "@/types/document";
 import { toast } from "sonner";
+import { HomeIcon } from "lucide-react";
+import Link from "next/link";
 
 type props = {
     data: document[];
@@ -62,7 +64,12 @@ export function AppSidebar({
                     </SidebarMenuItem>
                     <hr />
                     <SidebarMenuItem className="flex justify-between items-center p-2.5">
-                        <h3 className="text-primary">create workspace</h3>{" "}
+                        <Link
+                            href={"./"}
+                            className="text-primary flex items-center space-x-2"
+                        >
+                            <HomeIcon /> <span>Workspace</span>
+                        </Link>{" "}
                         <SidebarTriggerMineClose>
                             <SidebarTrigger />
 

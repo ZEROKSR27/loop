@@ -51,12 +51,19 @@ export async function POST(req: NextRequest) {
             documentOutput,
             id: uuid,
         });
-        await db.collection("outputs").doc(uuid).set({
-            documentID: uuid,
-            id: uuid,
-            output: [],
-            workspaceID: workspaceID,
-        });
+        await db
+            .collection("outputs")
+            .doc(uuid)
+            .set({
+                documentID: uuid,
+                id: uuid,
+                output: JSON.stringify({
+                    time: uuid,
+                    blocks: [],
+                    version: "2.31.0-rc.7",
+                }),
+                workspaceID: workspaceID,
+            });
 
         //4. tel client about it
         return NextResponse.json({
