@@ -168,7 +168,7 @@ export default function File({ workspaceID, documentID }: params) {
                                         `https://${
                                             process.env.NEXT_PUBLIC_MY_DOMAIN ||
                                             "localhost:3000"
-                                        }/${workspaceID}/${currentDocument}`
+                                        }/${workspaceID}/${currentDocument.id}`
                                     )
                                 }
                             >
